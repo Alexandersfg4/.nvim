@@ -51,6 +51,7 @@ return {
 				{ '<leader>r', group = '[R]efactor' },
 				{ '<leader>c', group = '[C]ode' },
 				{ '<leader>g', group = '[G]it' },
+				{ '<leader>g', group = '[T]ests' },
 			},
 			sort = { "alphanum" },
 		},

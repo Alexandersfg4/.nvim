@@ -1,4 +1,36 @@
 return {
+	{ -- Autoformat
+		'stevearc/conform.nvim',
+		lazy = false,
+		keys = {
+			{
+				'<leader>f',
+				function()
+					require('conform').format { async = true, lsp_fallback = true }
+				end,
+				mode = '',
+				desc = '[F]ormat buffer',
+			},
+		},
+		opts = {
+			notify_on_error = false,
+			format_on_save = {
+				-- These options will be passed to conform.format()
+				timeout_ms = 500,
+				lsp_format = "fallback",
+			},
+			formatters_by_ft = {
+				lua = { 'stylua' },
+				go = { 'goimports', 'gofumpt', 'golines' },
+				-- Conform can also run multiple formatters sequentially
+				-- python = { "isort", "black" },
+				--
+				-- You can use a sub-list to tell conform to run *until* a formatter
+				-- is found.
+				-- javascript = { { "prettierd", "prettier" } },
+			},
+		},
+	},
 	{ -- Autocompletion
 		'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
@@ -170,7 +202,7 @@ return {
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
 					if client and client.server_capabilities.documentHighlightProvider then
 						local highlight_augroup = vim.api.nvim_create_augroup(
-						'kickstart-lsp-highlight', { clear = false })
+							'kickstart-lsp-highlight', { clear = false })
 						vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
 							buffer = event.buf,
 							group = highlight_augroup,
@@ -184,14 +216,22 @@ return {
 						})
 
 						vim.api.nvim_create_autocmd('LspDetach', {
-							group = vim.api.nvim_create_augroup('kickstart-lsp-detach',
+							group = vim.api.nvim_create_augroup('lsp-detach',
 								{ clear = true }),
 							callback = function(event2)
 								vim.lsp.buf.clear_references()
-								vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+								vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
 							end,
 						})
 					end
+				end,
+			})
+
+			-- RUN format on save
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				pattern = "*",
+				callback = function(args)
+					require("conform").format({ bufnr = args.buf })
 				end,
 			})
 
@@ -266,8 +306,11 @@ return {
 			vim.list_extend(ensure_installed, {
 				'stylua', -- Used to format Lua code
 				'typescript-language-server', -- typescript
-				'gopls', -- golang
 				'jsonls', -- json schema validator
+				'gopls', -- golang
+				'goimports', -- go formatter
+				'gofumpt', -- go formatter
+				'golines', -- go formatter
 			})
 			require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
