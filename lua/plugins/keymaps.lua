@@ -15,10 +15,6 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
--- Find keymaps
-local fzf = require('fzf-lua')
-vim.keymap.set('n', '<leader>sf', fzf.files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sw', fzf.grep_visual, { desc = '[S]earch [W]words by pattern' })
 -- LSP keymaps
 -- NOTE: Remember that Lua is a real programming language, and as such it is possible
 -- to define small helper and utility functions so you don't have to repeat yourself.
@@ -28,15 +24,6 @@ vim.keymap.set('n', '<leader>sw', fzf.grep_visual, { desc = '[S]earch [W]words b
 local map_lsp = function(keys, func, desc)
 	vim.keymap.set('n', keys, func, { desc = 'LSP: ' .. desc })
 end
--- Jump to the definition of the word under your cursor.
---  This is where a variable was first declared, or where a function is defined, etc.
---  To jump back, press <C-t>.
-map_lsp('gd', fzf.lsp_definitions, '[G]oto [D]efinition')
--- Find references for the word under your cursor.
-map_lsp('gr', fzf.lsp_references, '[G]oto [R]eferences')
--- Jump to the implementation of the word under your cursor.
---  Useful when your language has ways of declaring types without an actual implementation.
-map_lsp('gI', fzf.lsp_implementations, '[G]oto [I]mplementation')
 -- Rename the variable under your cursor.
 --  Most Language Servers support renaming across files, etc.
 map_lsp('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -50,17 +37,22 @@ map_lsp('K', vim.lsp.buf.hover, 'Hover Documentation')
 --  For example, in C this would take you to the header.
 map_lsp('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-return  {
+return {
 	-- WhichKey helps you remember your Neovim keymaps, by showing available keybindings in a popup as you type.
-	{"folke/which-key.nvim",
-  event = "VeryLazy",
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-    spec = {
-	{ '<leader>s', group = '[S]earch' },
-	{ '<leader>r', group = '[R]efactor' },
-    },
-  },
-  },}
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+			spec = {
+				{ '<leader>s', group = '[S]earch' },
+				{ '<leader>r', group = '[R]efactor' },
+				{ '<leader>c', group = '[C]ode' },
+				{ '<leader>g', group = '[G]it' },
+			},
+			sort = { "alphanum" },
+		},
+	},
+}
