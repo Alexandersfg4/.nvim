@@ -11,7 +11,18 @@ return {
 			--  This is where a variable was first declared, or where a function is defined, etc.
 			--  To jump back, press <C-t>.
 			{ "<leader>sf", "<cmd>lua require('fzf-lua').files()<cr>", desc = "[S]earch [F]iles" },
-			{ "<leader>sw", "<cmd>lua require('fzf-lua').grep_visual()<cr>", desc = "[S]earch [W]words by pattern" },
+			{ "<leader>su", "<cmd>lua require('fzf-lua').grep_cword()<cr>", desc = "[S]earch word [U]nder cursor" },
+			{ "<leader>sg", "<cmd>lua require('fzf-lua').live_grep_native()<cr>", desc = "[S]earch by re[g]exp" },
+			{
+				"<leader>sw",
+				"<cmd>lua require('fzf-lua').diagnostics_workspace()<cr>",
+				desc = "[S]earch [W]orkspace diagnostics",
+			},
+			{
+				"<leader>sd",
+				"<cmd>lua require('fzf-lua').lsp_document_diagnostics()<cr>",
+				desc = "[S]earch [D]ocument diagnostics",
+			},
 			{
 				"<leader>sc",
 				"<cmd>lua require('fzf-lua').grep_visual({ cwd = '~/.config/nvim/' })<cr>",
@@ -22,7 +33,6 @@ return {
 				"<cmd>lua require('fzf-lua').grep_visual({ cwd = '~/notes/' })<cr>",
 				desc = "[S]earch [N]otes by pattern",
 			},
-			{ "gd", "<cmd>lua require('fzf-lua').lsp_definitions()<cr>", desc = "[G]oto [D]efinition" },
 			{ "gr", "<cmd>lua require('fzf-lua').lsp_references()<cr>", desc = "[G]oto [R]eferences" },
 			{ "gI", "<cmd>lua require('fzf-lua').lsp_implementations()<cr>", desc = "[G]oto [I]mplementation" },
 		},
