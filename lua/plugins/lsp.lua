@@ -1,4 +1,22 @@
+-- Supported go build tags
+local goBuildTags = "e2e,integration,smoke"
+
 return {
+	-- Go specific plugin
+	{
+		"ray-x/go.nvim",
+		dependencies = { -- optional packages
+			"ray-x/guihua.lua",
+			"neovim/nvim-lspconfig",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		config = function()
+			require("go").setup()
+		end,
+		event = { "CmdlineEnter" },
+		ft = { "go", "gomod" },
+		build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+	},
 	{ -- Autoformat
 		"stevearc/conform.nvim",
 		lazy = false,
@@ -200,28 +218,34 @@ return {
 					--
 					-- When you move your cursor, the highlights will be cleared (the second autocommand).
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					if client and client.server_capabilities.documentHighlightProvider then
-						local highlight_augroup =
-							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
-						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-							buffer = event.buf,
-							group = highlight_augroup,
-							callback = vim.lsp.buf.document_highlight,
-						})
+					if client then
+						if client.server_capabilities.documentHighlightProvider then
+							local highlight_augroup =
+								vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+							vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+								buffer = event.buf,
+								group = highlight_augroup,
+								callback = vim.lsp.buf.document_highlight,
+							})
 
-						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-							buffer = event.buf,
-							group = highlight_augroup,
-							callback = vim.lsp.buf.clear_references,
-						})
+							vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+								buffer = event.buf,
+								group = highlight_augroup,
+								callback = vim.lsp.buf.clear_references,
+							})
 
-						vim.api.nvim_create_autocmd("LspDetach", {
-							group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
-							callback = function(event2)
-								vim.lsp.buf.clear_references()
-								vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
-							end,
-						})
+							-- vim.api.nvim_create_autocmd("LspDetach", {
+							-- 	group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
+							-- 	callback = function(event2)
+							-- 		vim.lsp.buf.clear_references()
+							-- 		vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
+							-- 	end,
+							-- })
+						end
+						-- Go specific keymaps override
+						if client.name == "gopls" then
+							vim.keymap.set("n", "<leader>rn", ":GoRename<CR>", { desc = "[R]e[n]ame" })
+						end
 					end
 				end,
 			})
@@ -255,7 +279,7 @@ return {
 				gopls = {
 					settings = {
 						gopls = {
-							buildFlags = { "-tags=e2e,integration,smoke" },
+							buildFlags = { "-tags=" .. goBuildTags },
 							analyses = {
 								unusedparams = true,
 							},
@@ -290,6 +314,7 @@ return {
 					},
 				},
 				marksman = {},
+				yamlls = {},
 			}
 			-- Ensure the servers and tools above are installed
 			--  To check the current status of installed tools and/or manually install
@@ -311,6 +336,7 @@ return {
 				"gofumpt", -- go formatter
 				"golines", -- go formatter
 				"marksman", -- markdown
+				"yaml-language-server",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

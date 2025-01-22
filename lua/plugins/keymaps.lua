@@ -25,6 +25,8 @@ vim.keymap.set("n", "t", "<CR>:terminal<CR>", { desc = "Open terminal" })
 vim.api.nvim_set_keymap("t", "<leader>q", "<C-\\><C-n>:bd!<CR>", { noremap = true, silent = true })
 -- Exit terminal and input mode
 vim.keymap.set("i", "jk", "<Esc><Esc>", { desc = "Exit insert mode" })
+-- Exit from input mode
+vim.keymap.set("i", "ол", "<Esc><Esc>", { desc = "Exit insert mode" })
 vim.keymap.set("t", "jk", "<Esc><Esc>", { desc = "Exit terminal mode" })
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows

@@ -1,11 +1,8 @@
 return {
 	{
-		-- dir = "~/Projects/nvim_plugins/allure-go.nvim/",
-		"Alexandersfg4/allure-go.nvim",
-		opts = {
-			-- Path to the tests
-			test_path = "test/tests",
-		},
+		dir = "~/Projects/nvim_plugins/allure-go.nvim/",
+		-- "Alexandersfg4/allure-go.nvim",
+		opts = {},
 		keys = {
 			-- Allure keymaps
 			{ "<leader>tr", "<cmd>lua require('allure-go').check_and_run_allure()<cr>", desc = "Run allure serve" },
@@ -22,6 +19,7 @@ return {
 				desc = "Stop currently running test",
 			},
 			{ "<leader>tc", "<cmd>lua require('allure-go').change_tag()<cr>", desc = "Change tag" },
+			{ "<leader>tt", "<cmd>lua require('allure-go').set_test_path()<cr>", desc = "Change test path" },
 		},
 	},
 }
