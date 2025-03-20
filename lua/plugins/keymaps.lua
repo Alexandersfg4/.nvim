@@ -1,6 +1,6 @@
 -- clear search by pressing Esc
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-vim.keymap.set("n", "<leader>q", vim.cmd.exit, { desc = "[Q]uite  buffer" })
+vim.keymap.set("n", "<leader>q", vim.cmd.exit, { desc = "[Q]uite buffer" })
 vim.keymap.set("n", "<leader>w", vim.cmd.update, { desc = "[W]rite changes to file" })
 vim.keymap.set("n", "<leader>es", ":wa<CR>:qa<CR>", { desc = "[S]ave all buffers and close them" })
 vim.keymap.set("n", "<leader>ew", ":qa!<CR>", { desc = "Close all buffers [W]ithout saving" })
@@ -20,13 +20,12 @@ vim.api.nvim_set_keymap(
 )
 
 -- TERMINAL
-vim.keymap.set("n", "t", "<CR>:terminal<CR>", { desc = "Open terminal" })
+vim.keymap.set("n", "<leader>ot", "<CR>:terminal<CR>", { desc = "Open terminal" })
 -- Map <leader>tt to close the terminal buffer
 vim.api.nvim_set_keymap("t", "<leader>q", "<C-\\><C-n>:bd!<CR>", { noremap = true, silent = true })
 -- Exit terminal and input mode
 vim.keymap.set("i", "jk", "<Esc><Esc>", { desc = "Exit insert mode" })
 -- Exit from input mode
-vim.keymap.set("i", "ол", "<Esc><Esc>", { desc = "Exit insert mode" })
 vim.keymap.set("t", "jk", "<Esc><Esc>", { desc = "Exit terminal mode" })
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -73,7 +72,8 @@ return {
 				{ "<leader>r", group = "[R]efactor" },
 				{ "<leader>c", group = "[C]ode" },
 				{ "<leader>g", group = "[G]it" },
-				{ "<leader>g", group = "[T]ests" },
+				{ "<leader>t", group = "[T]ests" },
+				{ "<leader>o", group = "[O]open" },
 			},
 			sort = { "alphanum" },
 		},
