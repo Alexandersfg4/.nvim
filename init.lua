@@ -32,5 +32,8 @@ vim.opt.inccommand = "split"
 vim.opt.scrolloff = 10
 -- Set highlight on search
 vim.opt.hlsearch = true
+-- Don't save in buffer removed by X/x characters
+vim.keymap.set("n", "x", '"_x')
+vim.keymap.set("n", "X", '"_X')
 
 require("config.lazy")

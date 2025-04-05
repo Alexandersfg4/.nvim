@@ -235,15 +235,6 @@ return { -- Go specific plugin
 			require("mason-lspconfig").setup()
 		end,
 	},
-	-- Garbage collector that stops inactive LSP clients to free RAM
-	{
-		"zeioth/garbage-day.nvim",
-		dependencies = "neovim/nvim-lspconfig",
-		event = "VeryLazy",
-		opts = {
-			-- your options here
-		},
-	},
 	{
 		-- A small Neovim plugin for previewing native LSP's goto definition, type definition, implementation, declaration and references calls in floating windows.
 		"rmagatti/goto-preview",

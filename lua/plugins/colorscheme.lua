@@ -10,6 +10,7 @@ return {
 		end,
 	},
 	{
+		-- enable fucus for active window
 		"sunjon/shade.nvim",
 		opts = {
 			overlay_opacity = 50,
